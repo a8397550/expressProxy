@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 
 // app.use(formidable())
 
-let proxyPath;
+let proxyPath = "http://127.0.0.1:8080";
 let port = 9090;
 
 process.argv.forEach((key, index) => {
@@ -18,6 +18,9 @@ process.argv.forEach((key, index) => {
     proxyPath = process.argv[index + 1];
   }
 })
+
+console.log(`proxyPath=${proxyPath}`);
+console.log(`port=${port}`);
 
 
 // 测试Server端 express
@@ -74,17 +77,17 @@ app.all('*', function(req, res, next) {
   next();
 });
 
-app.use(express.static('./examples'));
+app.use(express.static('./public'));
 
 app.use(bodyParser.json())
 
 app.use((req, res, next) => {
   console.log('Time: ', Date.now())
 
-  if (req.url.includes('/#') || req.url === '/') {
-    res.type('text/plain');
-    res.send(fs.readFileSync('./examples/index.html'))
-  }
+  // if (req.url.includes('/#') || req.url === '/') {
+  //   res.type('text/plain');
+  //   res.send(fs.readFileSync('./examples/index.html'))
+  // }
   next()
 })
 
